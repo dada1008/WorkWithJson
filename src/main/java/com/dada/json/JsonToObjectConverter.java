@@ -45,11 +45,21 @@ public class JsonToObjectConverter {
 		JavaType parametricType= mapper.getTypeFactory().constructParametricType(destinationClass, parameterType);
 		return mapper.readValue(outPut, parametricType);
 	}
+	public static <S, T> S jsonToParametricObject(File file, Class<S> destinationClass, Class<T> parameterType) throws JsonParseException, JsonMappingException, IOException {
+		JavaType parametricType= mapper.getTypeFactory().constructParametricType(destinationClass, parameterType);
+		return mapper.readValue(file, parametricType);
+	}
 	public static <S, C, T> S jsonToParametricObjectCollection(String outPut, Class<S> destinationClass, Class<C> collectionClass, Class<T> parameterType) throws JsonParseException, JsonMappingException, IOException {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		CollectionType subJT = mapper.getTypeFactory().constructCollectionType((Class<? extends Collection>) collectionClass, parameterType);
         JavaType parametricType= mapper.getTypeFactory().constructParametricType(destinationClass, subJT);
 		return mapper.readValue(outPut, parametricType);
+	}
+	public static <S, C, T> S jsonToParametricObjectCollection(File file, Class<S> destinationClass, Class<C> collectionClass, Class<T> parameterType) throws JsonParseException, JsonMappingException, IOException {
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		CollectionType subJT = mapper.getTypeFactory().constructCollectionType((Class<? extends Collection>) collectionClass, parameterType);
+        JavaType parametricType= mapper.getTypeFactory().constructParametricType(destinationClass, subJT);
+		return mapper.readValue(file, parametricType);
 	}
 	
 	public static void writeToFile(File file, Object object) throws JsonGenerationException, JsonMappingException, IOException {
