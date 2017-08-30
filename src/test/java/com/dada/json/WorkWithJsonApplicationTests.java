@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +63,23 @@ public class WorkWithJsonApplicationTests {
 		try {
 			//JsonToObjectConverter.writeToFile(order_json_file, result);
 			SearchResult<List<Order>> jsonResult = JsonToObjectConverter.jsonToParametricObjectCollection(order_json_file, SearchResult.class, List.class, Order.class);
+			assertEquals(result,jsonResult);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testJacksonGenericObjectMapToJson() {
+		Map<String, List<Order>> result = new HashMap<>();
+		result.put("orderList1", Arrays.asList(new Order(11, "Order11",110), new Order(12, "Order12",120)));
+		result.put("orderList2", Arrays.asList(new Order(21, "Order21",210), new Order(22, "Order22",220)));
+		result.put("orderList3", Arrays.asList(new Order(31, "Order31",310), new Order(32, "Order32",320)));
+		File order_json_file = new File("map_with_list.json");
+		try {
+			//JsonToObjectConverter.writeToFile(order_json_file, result);
+			Map<String, List<Order>> jsonResult = JsonToObjectConverter.jsonToMapWithListValue(order_json_file, String.class, Order.class);
 			assertEquals(result,jsonResult);
 		} catch (IOException e) {
 			e.printStackTrace();

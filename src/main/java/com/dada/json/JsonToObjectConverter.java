@@ -78,4 +78,11 @@ public class JsonToObjectConverter {
         JavaType type = mapper.getTypeFactory().constructMapType(ConcurrentHashMap.class, keyClass, valueClass);
         return mapper.readValue(jsonFile, type);
     }
+    
+    public static <K,T> Map<K,List<T>> jsonToMapWithListValue(File jsonFile, Class<K> keyClass, Class<T> parameterType) throws JsonParseException, JsonMappingException, IOException {
+		CollectionType subJT = mapper.getTypeFactory().constructCollectionType(List.class, parameterType);
+    	JavaType keyType= mapper.getTypeFactory().constructType(keyClass);
+        JavaType type = mapper.getTypeFactory().constructMapLikeType(Map.class, keyType, subJT);
+        return mapper.readValue(jsonFile, type);
+    }
 }
